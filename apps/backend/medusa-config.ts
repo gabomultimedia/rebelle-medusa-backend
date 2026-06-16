@@ -14,6 +14,6 @@ module.exports = defineConfig({
     }
   },
   admin: {
-    outDir: '.medusa/server/public/admin',
+    disable: true,
   }
 })
