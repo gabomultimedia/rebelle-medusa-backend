@@ -25,10 +25,6 @@ COPY --from=build /app/apps/backend/src /app/apps/backend/src
 COPY --from=build /app/apps/backend/medusa-config.ts /app/apps/backend/
 COPY --from=build /app/apps/backend/tsconfig.json /app/apps/backend/
 
-# Medusa runtime looks for admin at <root>/public/admin but build outputs to .medusa/server/public/admin
-# Copy/symlink the admin files to the expected runtime location
-RUN cp -r /app/apps/backend/.medusa/server/public/admin /app/apps/backend/public 2>/dev/null || true
-
 WORKDIR /app/apps/backend
 EXPOSE 9000
-CMD ["sh", "-c", "medusa db:migrate && medusa start"]
+CMD ["sh", "-c", "medusa db:migrate && node /app/node_modules/@medusajs/cli/cli.js exec ./src/scripts/seed.js && medusa start"]
