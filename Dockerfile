@@ -9,7 +9,7 @@ COPY package.json package-lock.json turbo.json ./
 COPY apps/backend/package.json ./apps/backend/
 RUN npm install --ignore-scripts --no-audit --no-fund
 
-# Build (medusa build also compiles src/scripts/ via SWC)
+# Build
 FROM deps AS build
 COPY . .
 RUN cd apps/backend && npx medusa build
@@ -27,4 +27,5 @@ COPY --from=build /app/apps/backend/tsconfig.json /app/apps/backend/
 
 WORKDIR /app/apps/backend
 EXPOSE 9000
-CMD ["sh", "-c", "medusa db:migrate && medusa exec .medusa/server/src/scripts/seed.js && medusa start"]
+# Run with debug output to see if seed runs
+CMD ["sh", "-c", "echo '=== STARTING MEDUSA ===' && medusa db:migrate && echo '=== MIGRATIONS DONE, EXECUTING SEED ===' && ls -la .medusa/server/src/scripts/ && medusa exec .medusa/server/src/scripts/seed.js || echo 'SEED FAILED' && echo '=== STARTING MEDUSA SERVER ===' && medusa start"]
