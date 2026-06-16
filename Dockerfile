@@ -7,7 +7,7 @@ WORKDIR /app
 FROM base AS deps
 COPY package.json package-lock.json turbo.json ./
 COPY apps/backend/package.json ./apps/backend/
-RUN npm ci --ignore-scripts
+RUN npm install --ignore-scripts
 
 # Build
 FROM deps AS build
