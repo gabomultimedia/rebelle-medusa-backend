@@ -26,4 +26,4 @@ COPY --from=build /app/apps/backend/tsconfig.json /app/apps/backend/
 
 EXPOSE 9000
 # Medusa CLI is installed at /app/node_modules (root), run from apps/backend
-CMD ["sh", "-c", "cd /app/apps/backend && npx medusa db:migrate && node /app/node_modules/@medusajs/cli/bin/medusa.js start"]
+CMD ["sh", "-c", "cd /app/apps/backend && npx medusa db:migrate && node /app/node_modules/@medusajs/cli/cli.js start"]
