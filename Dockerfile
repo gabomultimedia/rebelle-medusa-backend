@@ -3,11 +3,14 @@ FROM node:20-alpine AS base
 
 WORKDIR /app
 
+# Force fresh layer - bust cache
+ARG CACHEBUST=1
+
 # Install deps
 FROM base AS deps
 COPY package.json package-lock.json turbo.json ./
 COPY apps/backend/package.json ./apps/backend/
-RUN npm install --ignore-scripts
+RUN npm install --ignore-scripts --no-audit --no-fund
 
 # Build
 FROM deps AS build
